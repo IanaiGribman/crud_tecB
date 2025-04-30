@@ -1,0 +1,52 @@
+<?php
+include 'config.php';
+
+/**
+ * $_SERVER con esta "super-global" detecto con qué método
+ * consultan al servidor.
+ * https://www.php.net/manual/es/reserved.variables.request.php
+ * https://www.php.net/manual/es/language.variables.superglobals.php 
+ */
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name = $_POST['fullname'];
+    $email = $_POST['email'];
+    $age = $_POST['age'];
+
+    $sql = "INSERT INTO students (fullname, email, age)
+            VALUES ('$name', '$email', $age)";
+
+    if ($connection->query($sql) === TRUE) {
+        /**
+         * la función header redirige a la página principal index.php
+         * de lo contrario recargaría la misma página.
+         */
+        header("Location: index.php"); 
+        exit;
+    } else {
+        echo "Error al insertar: " . $connection->error;
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='style.css'> 
+    <title>Document</title>
+</head>
+<body class = "body_ins_upd">
+    
+    <h2>Agregar Estudiante</h2>
+    <form action="insert.php" method="post">
+        <h4>Nombre completo:</h4> 
+        <input type="text" name="fullname" required><br>
+        <h4>Email:</h4>
+        <input type="email" name="email" required><br>
+        <h4>Edad:</h4>
+        <input type="number" name="age" required><br>
+        <input type="submit" value="Guardar">
+    </form>
+</body>
+</html>
+
