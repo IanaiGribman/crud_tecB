@@ -4,13 +4,14 @@ import { studentsSubjectsAPI } from '../api/studentsSubjectsAPI.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    initSelects();
-    setupFormHandler();
-    loadRelations();
+    initSelects(); // Inicializar selects de estudiantes y materias
+    setupFormHandler(); // Configurar el manejador del formulario
+    loadRelations(); // Muestra las relaciones al cargar la página
 });
 
 async function initSelects() {
     try {
+        // Esta funcion se encarga de cargar los estudiantes y materias en los selects del formulario
         // Cargar estudiantes
         const students = await studentsAPI.fetchAll();
         const studentSelect = document.getElementById('studentIdSelect');

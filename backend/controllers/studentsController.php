@@ -1,4 +1,5 @@
 <?php
+//Los controllers son los encargados de manejar las peticiones HTTP y llamar a los modelos correspondientes
 require_once("./models/students.php");
 
 
@@ -28,6 +29,7 @@ function handlePost($conn) {
     }
     else {
         http_response_code(500);
+        // esto es un json que se envía al cliente en caso de error
         echo json_encode(["error" => "No se pudo agregar"]);
     }
 }

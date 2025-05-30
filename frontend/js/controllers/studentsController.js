@@ -1,13 +1,14 @@
 import { studentsAPI } from '../api/studentsAPI.js';
-
+// los archivos de este directorio son importados por el index.html
 document.addEventListener('DOMContentLoaded', () => {
-    loadStudents();
-    setupFormHandler();
+    loadStudents(); // Cargar estudiantes al iniciar la página
+    setupFormHandler(); // Configurar el manejador del formulario
 });
   
 function setupFormHandler(){
     const form = document.getElementById('studentForm');
     form.addEventListener('submit', async e => {
+        // e es el evento del formulario, lo usamos para prevenir el comportamiento por defecto
         e.preventDefault();
         const student = getFormData();
     
@@ -21,7 +22,8 @@ function setupFormHandler(){
             clearForm();
             loadStudents();
         }
-        catch (err){
+        catch (err){ 
+            alert('Error guardando estudiante: El Mail Ya existe');
             console.error(err.message);
         }
     });
@@ -42,13 +44,11 @@ function clearForm(){
 }
   
 async function loadStudents(){
-    try 
-    {
+    try {
         const students = await studentsAPI.fetchAll();
         renderStudentTable(students);
     } 
-    catch (err) 
-    {
+    catch (err) {
         console.error('Error cargando estudiantes:', err.message);
     }
 }
@@ -101,6 +101,7 @@ function fillForm(student){
 }
   
 async function confirmDelete(id) {
+    // podria usar un alert en lugar de confirm
     if (!confirm('¿Estás seguro que deseas borrar este estudiante?')) 
         return;
   
