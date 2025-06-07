@@ -76,6 +76,7 @@ function setupFormHandler()
         } 
         catch (err) 
         {
+            alert("Error guardando relación: Esta realación ya existe.");
             console.error('Error guardando relación:', err.message);
         }
     });

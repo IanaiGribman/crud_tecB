@@ -12,7 +12,7 @@ export function createAPI(moduleName, config = {})
 {
     const API_URL = config.urlOverride ?? `../../backend/server.php?module=${moduleName}`;
 
-    async function sendJSON(method, data) 
+    async function sendJSON(method, data) // Ej senfdJSON('POST', { name: 'John', email: '
     {
         const res = await fetch(API_URL,
         {
@@ -21,7 +21,10 @@ export function createAPI(moduleName, config = {})
             body: JSON.stringify(data)
         });
 
-        if (!res.ok) throw new Error(`Error en ${method}`);
+        if (!res.ok){
+            throw new Error(`Error en ${method}: ${res.status} ${res.statusText}`);
+            //throw new Error(`error en ${method}`);
+        }
         return await res.json();
     }
 

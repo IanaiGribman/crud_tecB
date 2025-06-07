@@ -71,7 +71,13 @@ function handleDelete($conn)
     else 
     {
         http_response_code(500);
-        echo json_encode(["error" => "No se pudo eliminar"]);
+        // voy a mostrar el mensaje que viene de return ['error' => 'No se puede eliminar el subject porque tiene estudiantes asociados'];
+        if (isset($result['error'])) {
+            echo json_encode(["error" => $result['error']]);
+        } else {
+            echo json_encode(["error" => "No se pudo eliminar"]);
+        }
+        //echo json_encode(["error" => "No se pudo eliminar"]);
     }
 }
 ?>

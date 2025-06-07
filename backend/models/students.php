@@ -30,18 +30,35 @@ function getStudentById($conn, $id)
 
 function createStudent($conn, $fullname, $email, $age) 
 {
-    $sql = "INSERT INTO students (fullname, email, age) VALUES (?, ?, ?)";
+    // añadido por mi:
+    $sql = "SELECT * FROM students WHERE email = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $fullname, $email, $age);
+    $stmt->bind_param("s", $email);
     $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        // Si ya existe un estudiante con ese email, se retorna un error:
+        http_response_code(400);
+        return ['error' => 'El email ya esta registrado'];
+    } // Fin añadido por mi
+    else{  
 
-    //Se retorna un arreglo con la cantidad e filas insertadas 
-    //y id insertado para validar en el controlador:
-    return 
-    [
-        'inserted' => $stmt->affected_rows,        
-        'id' => $conn->insert_id
-    ];
+        $sql = "INSERT INTO students (fullname, email, age) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ssi", $fullname, $email, $age);
+        $stmt->execute();
+
+        //Se retorna un arreglo con la cantidad e filas insertadas 
+        //y id insertado para validar en el controlador:
+        return 
+        [
+            'inserted' => $stmt->affected_rows,        
+            'id' => $conn->insert_id
+        ];
+    }
+   
+    
+  
 }
 
 function updateStudent($conn, $id, $fullname, $email, $age) 

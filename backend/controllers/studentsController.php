@@ -13,6 +13,7 @@ require_once("./models/students.php");
 
 function handleGet($conn) 
 {
+    // file_get_contents("php://input") lee la información del cuerpo de la solicitud HTTP.
     $input = json_decode(file_get_contents("php://input"), true);
     
     if (isset($input['id'])) 
@@ -32,14 +33,15 @@ function handlePost($conn)
     $input = json_decode(file_get_contents("php://input"), true);
 
     $result = createStudent($conn, $input['fullname'], $input['email'], $input['age']);
-    if ($result['inserted'] > 0) 
+    if (!isset($result['error']))  //previamente $result['inserted'] > 0
     {
         echo json_encode(["message" => "Estudiante agregado correctamente"]);
     } 
     else 
     {
         http_response_code(500);
-        echo json_encode(["error" => "No se pudo agregar"]);
+        //echo json_encode(["error" => "No se pudo agregar"]);
+        echo json_encode(["error" => $result['error']]); // Si hay un error, se retorna el mensaje de error
     }
 }
 

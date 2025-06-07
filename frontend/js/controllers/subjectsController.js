@@ -46,6 +46,7 @@ function setupSubjectFormHandler()
         }
         catch (err)
         {
+            alert('Error al guardar la materia: El nombre de la materia ya existe.');
             console.error(err.message);
         }
   });
@@ -130,6 +131,7 @@ async function confirmDeleteSubject(id)
     }
     catch (err)
     {
+        alert('Error al borrar la materia: Existe una relación con esta materia. elimine las relaciones antes de borrar la materia.');
         console.error('Error al borrar materia:', err.message);
     }
 }

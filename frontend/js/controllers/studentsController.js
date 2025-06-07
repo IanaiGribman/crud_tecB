@@ -8,6 +8,15 @@
 *    Iteration   : 3.0 ( prototype )
 */
 
+/*
+    Este archivo maneja la logica de vista del módulo de estudiantes.
+    
+    Delega las operaciones CRUD a la API de estudiantes.
+    No se comunica de manera directa con el backend, sino a través de la API.
+
+    Crea y actualiza el estado de todo elemento HTLM dinamicamente.
+*/
+
 import { studentsAPI } from '../api/studentsAPI.js';
 
 document.addEventListener('DOMContentLoaded', () => 
@@ -24,6 +33,7 @@ function setupFormHandler()
     {
         e.preventDefault();
         const student = getFormData();
+        // student es un objeto con los datos del formulario
     
         try 
         {
@@ -40,6 +50,7 @@ function setupFormHandler()
         }
         catch (err)
         {
+            alert('Error al guardar el estudiante: El correo electronico ya existe.');
             console.error(err.message);
         }
     });
@@ -56,6 +67,7 @@ function setupCancelHandler()
   
 function getFormData()
 {
+    // Obtiene los datos del formulario y los devuelve como un objeto
     return {
         id: document.getElementById('studentId').value.trim(),
         fullname: document.getElementById('fullname').value.trim(),
@@ -146,6 +158,7 @@ async function confirmDelete(id)
     } 
     catch (err) 
     {
+        alert('Error al borrar el estudiante: El estudiante no puede ser borrado porque tiene inscripciones a materias. Por favor, borre las inscripciones antes de borrar el estudiante.');
         console.error('Error al borrar:', err.message);
     }
 }

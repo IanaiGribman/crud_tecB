@@ -53,11 +53,25 @@ function updateSubject($conn, $id, $name)
 
 function deleteSubject($conn, $id) 
 {
-    $sql = "DELETE FROM subjects WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
+    // antes de borrarlo voy a verificar si no hay una relacion en la tabla students_subjects:
+    $checkSql = "SELECT * FROM students_subjects WHERE subject_id = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("i", $id);
+    $checkStmt->execute();
+    $checkResult = $checkStmt->get_result();  // si hay una relacion, no se puede borrar el subject
+    if ($checkResult->num_rows > 0) {
+        http_response_code(400);
+        return ['error' => 'No se puede eliminar el subject porque tiene estudiantes asociados'];
+    }
+    else {  // Si no hay relaciones, se procede a eliminar el subject:
+        $sql = "DELETE FROM subjects WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        return ['deleted' => $stmt->affected_rows];
 
-    return ['deleted' => $stmt->affected_rows];
+    }
+
+   
 }
 ?>

@@ -32,10 +32,14 @@ function routeRequest($conn, $customHandlers = [], $prefix = 'handle')
     }
 
     $handler = $handlers[$method];
+    // a la variable $handler le asignamos el nombre de la función que corresponde al método HTTP actual.
+    // Por ejemplo, si el método es GET, $handler será 'handleGet'.
 
     if (is_callable($handler)) 
     {
         $handler($conn);
+        // Si handler es llamable, lo ejecutamos pasando la conexión a la base de datos.
+        // Por ejemplo, si el método es GET, se ejecutará la función handleGet($conn).
     }
     else
     {
